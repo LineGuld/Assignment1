@@ -1,0 +1,61 @@
+﻿@page "/Families"
+@using Models
+@using FileData
+@inject IFamilyData _familyData
+<h1>Families</h1>
+
+@if (_Families == null)
+{
+    <p>Loading.....</p>
+}
+else if (!_Families.Any())
+{
+    <p>No people have been added.</p>
+}
+else
+{
+    <table>
+        <thead>
+        <tr>
+            <th>Streetname</th>
+            <th>House number</th>
+            <th>Name</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (Family family in _Families)
+        {
+            <tr>
+                <td>@family.StreetName</td>
+                <td>@family.HouseNumber</td>
+                <td>
+                    @foreach (var person in family.Adults)
+                    {
+                        <span>@person.FirstName @person.LastName</span>
+                        <br/> 
+                    }
+                </td>
+                <td>
+                    <button class="btn btn-warning">
+                        <span class="oi oi-pencil"></span>
+                    </button>
+                    <button class="btn btn-danger">
+                        <span class="oi oi-trash"></span>
+                    </button>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    public List<Family> _Families { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _Families = _familyData.GetFamily().ToList();
+    }
+
+}
