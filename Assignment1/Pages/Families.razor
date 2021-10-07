@@ -5,14 +5,14 @@
 <h1>Families</h1>
 
 <p> Search: 
-    <InputText/>
+    <input type="text" @oninput="(arg) => filter(arg)">
 </p>
 
-@if (_Families == null)
+@if (familiesToShow == null)
 {
     <p>Loading.....</p>
 }
-else if (!_Families.Any())
+else if (!familiesToShow.Any())
 {
     <p>No people have been added.</p>
 }
@@ -28,7 +28,7 @@ else
         </tr>
         </thead>
         <tbody>
-        @foreach (Family family in _Families)
+        @foreach (Family family in familiesToShow)
         {
             <tr>
                 <td>@family.StreetName</td>
@@ -55,7 +55,6 @@ else
 }
 
 @code {
-    private string searchInput;
     public List<Family> _Families { get; set; }
     public List<Family> familiesToShow { get; set; }
 
@@ -65,12 +64,29 @@ else
         familiesToShow = _Families;
     }
 
-    private void filter()
+    private void filter(ChangeEventArgs args)
     {
-        foreach (var family in _Families)
+        List<Adult> allAdults = new List<Adult>();
+        foreach (Family family in _Families)
         {
-            family.Adults.ForEach();
+            allAdults.AddRange(family.Adults);
         }
-        familiesToShow = _Families.Where(f => f.Adults.Where(a => (a.FirstName.Equals(searchInput) || a.LastName.Equals(searchInput))));
+        List<Adult> match = allAdults.Where(adult => adult.FirstName.Equals(args.Value) || adult.LastName.Equals(args.Value)).ToList();
+        familiesToShow = _Families.Where(a =>
+        {
+            foreach (Adult adult in a.Adults)
+            {
+                if (match.Contains(adult))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }).ToList();
+
+        if (args.Value != null && args.Value.Equals(""))
+        {
+            familiesToShow = _Families;
+        }
     }
 }

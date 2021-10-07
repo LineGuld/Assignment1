@@ -10,10 +10,10 @@
 <EditForm Model="newAdult" OnValidSubmit="@AddNewAdult">
     <DataAnnotationsValidator/>
     <ValidationSummary/>
-
-    <div class="form-group">
+    
+        <div class="form-group">
         <label for="address">Select address</label>
-        <select @bind="street" class="form-control" id="address">
+        <select class="form-control" id="address">
             @foreach (var family in Families)
             {
                 <option>
