@@ -9,7 +9,7 @@ namespace FileData
     public class FileContext
     {
         public IList<Family> Families { get; private set; }
-        // public IList<Adult> Adults { get; private set; }
+        // public IList<Adult> FamiliesToShow { get; private set; }
 
         private readonly string familiesFile = "families.json";
         // private readonly string adultsFile = "adults.json";
@@ -17,7 +17,7 @@ namespace FileData
         public FileContext()
         {
             Families = File.Exists(familiesFile) ? ReadData<Family>(familiesFile) : new List<Family>();
-            // Adults = File.Exists(adultsFile) ? ReadData<Adult>(adultsFile) : new List<Adult>();
+            // FamiliesToShow = File.Exists(adultsFile) ? ReadData<Adult>(adultsFile) : new List<Adult>();
         }
 
         private IList<T> ReadData<T>(string s)
@@ -41,7 +41,7 @@ namespace FileData
             }
 
             /* storing persons
-            string jsonAdults = JsonSerializer.Serialize(Adults, new JsonSerializerOptions
+            string jsonAdults = JsonSerializer.Serialize(FamiliesToShow, new JsonSerializerOptions
             {
                 WriteIndented = true
             });

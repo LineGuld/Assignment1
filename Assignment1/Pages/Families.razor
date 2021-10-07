@@ -5,7 +5,7 @@
 <h1>Families</h1>
 
 <p> Search: 
-    <InputText/>
+    <input type="text" @oninput="(arg) => filterByName(arg)"/>
 </p>
 
 @if (_Families == null)
@@ -55,22 +55,41 @@ else
 }
 
 @code {
-    private string searchInput;
+    private string? searchInput = null;
     public List<Family> _Families { get; set; }
-    public List<Family> familiesToShow { get; set; }
+    public List<Family> FamiliesToShow { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         _Families = _familyData.GetFamily().ToList();
-        familiesToShow = _Families;
+        FamiliesToShow = _Families;
     }
 
-    private void filter()
+    private void filterByName(ChangeEventArgs changeEventArgs)
     {
         foreach (var family in _Families)
         {
-            family.Adults.ForEach();
+            List<Adult> adults = family.Adults;
+            foreach (Adult adult in adults)
+            {
+                if (adult.FirstName.Equals(changeEventArgs.Value.ToString()))
+                {
+                    FamiliesToShow = _Families.Where(f => f.Adults.Contains(adult));
+
+                }
+            }
         }
-        familiesToShow = _Families.Where(f => f.Adults.Where(a => (a.FirstName.Equals(searchInput) || a.LastName.Equals(searchInput))));
+
+        searchInput = null;
+
+        try
+        {
+            searchInput = changeEventArgs.Value.ToString();
+        }
+        catch (Exception e)
+        {
+        }
+        
+        
     }
 }
