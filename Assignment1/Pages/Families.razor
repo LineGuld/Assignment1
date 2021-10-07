@@ -66,12 +66,19 @@ else
 
     private void filter(ChangeEventArgs args)
     {
+        if (args.Value != null && args.Value.Equals(""))
+        {
+            familiesToShow = _Families;
+            return;
+        }
+        
         List<Adult> allAdults = new List<Adult>();
         foreach (Family family in _Families)
         {
             allAdults.AddRange(family.Adults);
         }
-        List<Adult> match = allAdults.Where(adult => adult.FirstName.Equals(args.Value) || adult.LastName.Equals(args.Value)).ToList();
+        List<Adult> match = allAdults.Where(adult => adult.FirstName.Contains(args.Value.ToString()) 
+                                                     || adult.LastName.Contains(args.Value.ToString())).ToList();
         familiesToShow = _Families.Where(a =>
         {
             foreach (Adult adult in a.Adults)
@@ -83,10 +90,5 @@ else
             }
             return false;
         }).ToList();
-
-        if (args.Value != null && args.Value.Equals(""))
-        {
-            familiesToShow = _Families;
-        }
     }
 }
