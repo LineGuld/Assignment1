@@ -1,12 +1,16 @@
+using System.Security.Claims;
 using FileData;
+using FileData.Impl;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
+using Assignment1.Authentication;
+using FileData.Data;
 
 namespace Assignment1
 {
@@ -26,6 +30,13 @@ namespace Assignment1
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddScoped<IFamilyData, FamilyData>();
+            services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+            services.AddScoped<IUserService, InMemoryUserService>();
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("authorized",
+                    a => a.RequireAuthenticatedUser());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
