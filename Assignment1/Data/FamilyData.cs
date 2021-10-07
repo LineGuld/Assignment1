@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Models;
 
 namespace FileData
@@ -12,11 +13,13 @@ namespace FileData
             return _fileContext.Families;
         }
 
-        /*public void AddAdult(Adult adult)
+        public void AddAdult(Adult adult, string streetName)
         {
-         _fileContext.Families.Add(adult);
+            Family family = GetFamily().First(street => street.StreetName.Equals(streetName));
+            family.Adults.Add(adult);
+            _fileContext.SaveChanges();
         }
-        */
+        
 
         
     }

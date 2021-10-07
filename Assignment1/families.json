@@ -176,6 +176,18 @@
         "Weight": 106,
         "Height": 172,
         "Sex": "F"
+      },
+      {
+        "JobTitle": null,
+        "Id": 0,
+        "FirstName": "Tina",
+        "LastName": "Hadberg",
+        "HairColor": "r\u00F8d",
+        "EyeColor": "r\u00F8d",
+        "Age": 40,
+        "Weight": 130,
+        "Height": 45,
+        "Sex": "nonBinary"
       }
     ],
     "Children": [

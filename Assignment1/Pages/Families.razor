@@ -4,6 +4,10 @@
 @inject IFamilyData _familyData
 <h1>Families</h1>
 
+<p> Search: 
+    <InputText/>
+</p>
+
 @if (_Families == null)
 {
     <p>Loading.....</p>
@@ -33,7 +37,7 @@ else
                     @foreach (var person in family.Adults)
                     {
                         <span>@person.FirstName @person.LastName</span>
-                        <br/> 
+                        <br/>
                     }
                 </td>
                 <td>
@@ -51,11 +55,22 @@ else
 }
 
 @code {
+    private string searchInput;
     public List<Family> _Families { get; set; }
+    public List<Family> familiesToShow { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         _Families = _familyData.GetFamily().ToList();
+        familiesToShow = _Families;
     }
 
+    private void filter()
+    {
+        foreach (var family in _Families)
+        {
+            family.Adults.ForEach();
+        }
+        familiesToShow = _Families.Where(f => f.Adults.Where(a => (a.FirstName.Equals(searchInput) || a.LastName.Equals(searchInput))));
+    }
 }

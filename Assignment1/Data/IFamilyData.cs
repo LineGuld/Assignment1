@@ -6,8 +6,9 @@ namespace FileData
     public interface IFamilyData
     {
         IList<Family> GetFamily();
-        //void AddAdult(Adult adult);
+        void AddAdult(Adult adult, string streetName);
         //void RemovePerson();
+        
         
     }
 }
